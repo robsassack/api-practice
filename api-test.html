@@ -7,16 +7,31 @@
   <title>API Test</title>
 </head>
 <body>
+  <div>
+    <input type="text" id="query">
+    <button class="search">Find GIF</button>
+  </div>
   <img src="#">
   <script>
     const img = document.querySelector('img');
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=api_key&s=cats', {mode: 'cors'})
+    const query = document.querySelector('#query');
+    const search = document.querySelector('.search');
+
+    search.addEventListener('click', fetchGif);
+
+    function fetchGif() {
+      fetch(`https://api.giphy.com/v1/gifs/translate?api_key=api_key&s=${query.value}`, {mode: 'cors'})
       .then(function(response) {
         return response.json();
       })
       .then(function(response) {
         img.src = response.data.images.original.url;
+      })
+      .catch(function() {
+        img.src = '';
+        alert('No GIF found :(');
       });
+    }
   </script>
 </body>
 </html>
